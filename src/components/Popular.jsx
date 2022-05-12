@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/css";
+import noImage from "../no-image.jpg";
 
 function Popular() {
   const API_KEY = process.env.REACT_APP_API_KEY;
@@ -23,7 +24,6 @@ function Popular() {
       const data = await res.json();
       localStorage.setItem("popular", JSON.stringify(data.recipes));
       setPopular(data.recipes);
-      console.log(data.recipes);
     }
   };
 
@@ -55,7 +55,10 @@ function Popular() {
               <SplideSlide key={recipe.id}>
                 <Card>
                   <p>{recipe.title}</p>
-                  <img src={recipe.image} alt={recipe.title} />
+                  <img
+                    src={recipe.image ? recipe.image : noImage}
+                    alt={recipe.title}
+                  />
                   <Gradient />
                 </Card>
               </SplideSlide>
