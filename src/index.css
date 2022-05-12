@@ -8,3 +8,17 @@
 body {
   font-family: "Montserrat", sans-serif;
 }
+
+:is(h3, h4, a) {
+  color: rgba(56, 56, 56);
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin: 2rem 0;
+  line-height: 2.5rem;
+}
+
+h4 {
+  font-size: 1rem;
+}

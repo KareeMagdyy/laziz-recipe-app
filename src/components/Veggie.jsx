@@ -38,6 +38,19 @@ function Veggie() {
             arrows: false,
             pagination: false,
             gap: "3rem",
+            type: "loop",
+            lazyLoad: "nearby",
+            breakpoints: {
+              1100: {
+                perPage: 3,
+              },
+              768: {
+                perPage: 2,
+              },
+              460: {
+                perPage: 1,
+              },
+            },
           }}
         >
           {veggie.map((recipe) => {
@@ -59,6 +72,27 @@ function Veggie() {
 
 const Wrapper = styled.div`
   margin: 4rem 0;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+  position: relative;
+
+  @media (min-width: 576px) {
+    max-width: 540px;
+  }
+  @media (min-width: 768px) {
+    max-width: 720px;
+  }
+  @media (min-width: 992px) {
+    max-width: 920px;
+  }
+  @media (min-width: 1200px) {
+    max-width: 1140px;
+  }
+  @media (min-width: 1400px) {
+    max-width: 1320px;
+  }
 `;
 
 const Card = styled.div`
