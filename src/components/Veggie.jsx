@@ -28,45 +28,43 @@ function Veggie() {
   };
 
   return (
-    <div>
-      <Wrapper>
-        <h3>Our Vegetarian Picks</h3>
-        <Splide
-          options={{
-            perPage: 4,
-            drag: "free",
-            arrows: false,
-            pagination: false,
-            gap: "3rem",
-            type: "slide",
-            lazyLoad: "nearby",
-            breakpoints: {
-              1100: {
-                perPage: 3,
-              },
-              768: {
-                perPage: 2,
-              },
-              460: {
-                perPage: 1,
-              },
+    <Wrapper>
+      <h3>Our Vegetarian Picks</h3>
+      <Splide
+        options={{
+          perPage: 4,
+          drag: "free",
+          arrows: false,
+          pagination: false,
+          gap: "3rem",
+          type: "slide",
+          lazyLoad: "nearby",
+          breakpoints: {
+            1100: {
+              perPage: 3,
             },
-          }}
-        >
-          {veggie.map((recipe) => {
-            return (
-              <SplideSlide key={recipe.id}>
-                <Card>
-                  <p>{recipe.title}</p>
-                  <img src={recipe.image} alt={recipe.title} />
-                  <Gradient />
-                </Card>
-              </SplideSlide>
-            );
-          })}
-        </Splide>
-      </Wrapper>
-    </div>
+            768: {
+              perPage: 2,
+            },
+            460: {
+              perPage: 1,
+            },
+          },
+        }}
+      >
+        {veggie.map((recipe) => {
+          return (
+            <SplideSlide key={recipe.id}>
+              <Card>
+                <p>{recipe.title}</p>
+                <img src={recipe.image} alt={recipe.title} />
+                <Gradient />
+              </Card>
+            </SplideSlide>
+          );
+        })}
+      </Splide>
+    </Wrapper>
   );
 }
 

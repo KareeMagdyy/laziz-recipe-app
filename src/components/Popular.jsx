@@ -28,45 +28,43 @@ function Popular() {
   };
 
   return (
-    <div>
-      <Wrapper>
-        <h3>Our Popular Picks</h3>
-        <Splide
-          options={{
-            perPage: 3,
-            drag: "free",
-            arrows: false,
-            pagination: false,
-            gap: "3rem",
-            type: "slide",
-            lazyLoad: "nearby",
-            breakpoints: {
-              768: {
-                perPage: 2,
-              },
-              460: {
-                perPage: 1,
-              },
+    <Wrapper>
+      <h3>Our Popular Picks</h3>
+      <Splide
+        options={{
+          perPage: 3,
+          drag: "free",
+          arrows: false,
+          pagination: false,
+          gap: "3rem",
+          type: "slide",
+          lazyLoad: "nearby",
+          breakpoints: {
+            768: {
+              perPage: 2,
             },
-          }}
-        >
-          {popular.map((recipe) => {
-            return (
-              <SplideSlide key={recipe.id}>
-                <Card>
-                  <p>{recipe.title}</p>
-                  <img
-                    src={recipe.image ? recipe.image : noImage}
-                    alt={recipe.title}
-                  />
-                  <Gradient />
-                </Card>
-              </SplideSlide>
-            );
-          })}
-        </Splide>
-      </Wrapper>
-    </div>
+            460: {
+              perPage: 1,
+            },
+          },
+        }}
+      >
+        {popular.map((recipe) => {
+          return (
+            <SplideSlide key={recipe.id}>
+              <Card>
+                <p>{recipe.title}</p>
+                <img
+                  src={recipe.image ? recipe.image : noImage}
+                  alt={recipe.title}
+                />
+                <Gradient />
+              </Card>
+            </SplideSlide>
+          );
+        })}
+      </Splide>
+    </Wrapper>
   );
 }
 
