@@ -38,7 +38,7 @@ function Popular() {
             arrows: false,
             pagination: false,
             gap: "3rem",
-            type: "loop",
+            type: "slide",
             lazyLoad: "nearby",
             breakpoints: {
               768: {
