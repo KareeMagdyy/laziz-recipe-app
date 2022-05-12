@@ -7,22 +7,22 @@ function Category() {
   return (
     <Wrapper>
       <List>
-        <NavLink to={"/cuisine/Italian"}>
+        <SLink to={"/cuisine/Italian"}>
           <FaPizzaSlice />
           <h4>Italian</h4>
-        </NavLink>
-        <NavLink to={"/cuisine/American"}>
+        </SLink>
+        <SLink to={"/cuisine/American"}>
           <FaHamburger />
           <h4>American</h4>
-        </NavLink>
-        <NavLink to={"/cuisine/Thai"}>
+        </SLink>
+        <SLink to={"/cuisine/Thai"}>
           <GiNoodles />
           <h4>Thai</h4>
-        </NavLink>
-        <NavLink to={"/cuisine/Japanese"}>
+        </SLink>
+        <SLink to={"/cuisine/Japanese"}>
           <GiChopsticks />
           <h4>Japanese</h4>
-        </NavLink>
+        </SLink>
       </List>
     </Wrapper>
   );
@@ -59,6 +59,35 @@ const List = styled.div`
   justify-content: center;
   margin: 2rem 0;
   gap: 2rem;
+`;
+
+const SLink = styled(NavLink)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  text-decoration: none;
+  background: linear-gradient(35deg, #494949, #313131);
+  width: 5.3rem;
+  height: 5.3rem;
+  cursor: pointer;
+  text-align: center;
+
+  h4 {
+    font-size: 0.8rem;
+    color: #fff;
+  }
+
+  svg {
+    color: #fff;
+    font-size: 1.5rem;
+  }
+
+  &.active {
+    background: linear-gradient(to right, #f24121, #e94057);
+  }
 `;
 
 export default Category;
