@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { motion } from "framer-motion";
 
 function Recipe() {
   const [recipeDetails, setRecipeDetails] = useState({});
@@ -48,7 +49,12 @@ function Recipe() {
   });
 
   return (
-    <Wrapper>
+    <Wrapper
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Flex>
         <div>
           <h2>{recipeDetails.title}</h2>
@@ -77,7 +83,7 @@ function Recipe() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   margin: 4rem 0;
   max-width: 100%;
   margin-left: auto;
@@ -132,6 +138,7 @@ const Flex = styled.div`
     margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 400;
+    max-width: 30ch;
   }
 
   @media (max-width: 1200px) {

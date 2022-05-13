@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 function Searched() {
   const [searchedRecipes, setSearchedRecipes] = useState([]);
@@ -22,7 +23,12 @@ function Searched() {
   }, [params.search]);
 
   return (
-    <Wrapper>
+    <Wrapper
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Grid>
         {searchedRecipes.map((item) => {
           return (
@@ -39,7 +45,7 @@ function Searched() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   margin: 4rem 0;
   max-width: 100%;
   margin-left: auto;

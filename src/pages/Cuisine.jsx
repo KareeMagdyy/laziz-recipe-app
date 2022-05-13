@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-// import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import noImage from "../no-image.jpg";
 import { Link } from "react-router-dom";
@@ -23,7 +23,12 @@ function Cuisine() {
   }, [params.type]);
 
   return (
-    <Wrapper>
+    <Wrapper
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Grid>
         {cuisine.map((item) => {
           return (
@@ -40,7 +45,7 @@ function Cuisine() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   margin: 4rem 0;
   max-width: 100%;
   margin-left: auto;

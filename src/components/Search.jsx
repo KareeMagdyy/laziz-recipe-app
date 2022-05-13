@@ -10,6 +10,7 @@ function Search() {
   const submitHandler = (e) => {
     e.preventDefault();
     navigate(`/searched/${searchValue}`);
+    setSearchValue("");
   };
 
   return (
