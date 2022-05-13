@@ -1,29 +1,51 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 
 function Recipe() {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [activeTab, setActiveTab] = useState("ingredients");
+  const [analyzedInstructions, setAnalyzedInstructions] = useState([]);
 
   const API_KEY = process.env.REACT_APP_API_KEY;
   let params = useParams();
 
   const getFullRecipe = async () => {
+    try {
+      const res = await fetch(
+        `https://api.spoonacular.com/recipes/${params.id}/information?apiKey=${API_KEY}`
+      );
+      const data = await res.json();
+      setRecipeDetails(data);
+    } catch (err) {
+      console.error("Recipe API", err);
+    }
+  };
+
+  const getAnalyzedInstructions = async () => {
     const res = await fetch(
-      `https://api.spoonacular.com/recipes/${params.id}/information?apiKey=${API_KEY}`
+      `https://api.spoonacular.com/recipes/${params.id}/analyzedInstructions?apiKey=${API_KEY}`
     );
     const data = await res.json();
-    setRecipeDetails(data);
-    console.log(data);
+    setAnalyzedInstructions(data[0].steps);
   };
 
   useEffect(() => {
     getFullRecipe();
+    getAnalyzedInstructions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
-  //
+  const ingredientsDetailed = (recipeDetails.extendedIngredients || []).map(
+    (ingredient) => {
+      return <li key={uuidv4()}>{ingredient.original}</li>;
+    }
+  );
+
+  const instructionsDetailed = analyzedInstructions.map((instruction) => {
+    return <li key={uuidv4()}>{instruction.step}</li>;
+  });
 
   return (
     <Wrapper>
@@ -46,21 +68,8 @@ function Recipe() {
             Instructions
           </Button>
           <div>
-            {activeTab === "ingredients" && (
-              <ul>
-                {recipeDetails.extendedIngredients.map((item) => {
-                  return <li>{item.original}</li>;
-                })}
-              </ul>
-            )}
-
-            {activeTab === "instructions" && (
-              <ol>
-                {recipeDetails.analyzedInstructions[0].steps.map((step) => {
-                  return <li>{step.step}</li>;
-                })}
-              </ol>
-            )}
+            {activeTab === "ingredients" && <ul>{ingredientsDetailed}</ul>}
+            {activeTab === "instructions" && <ol>{instructionsDetailed}</ol>}
           </div>
         </Info>
       </Flex>
@@ -107,6 +116,7 @@ const Flex = styled.div`
 
   h2 {
     margin-bottom: 2rem;
+    max-width: 30ch;
   }
 
   ol,

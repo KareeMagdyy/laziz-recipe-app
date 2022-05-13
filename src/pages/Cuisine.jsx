@@ -3,6 +3,7 @@ import styled from "styled-components";
 // import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import noImage from "../no-image.jpg";
+import { Link } from "react-router-dom";
 
 function Cuisine() {
   const API_KEY = process.env.REACT_APP_API_KEY;
@@ -27,8 +28,10 @@ function Cuisine() {
         {cuisine.map((item) => {
           return (
             <Card key={item.id}>
-              <img src={item.image ? item.image : noImage} alt={item.title} />
-              <h4>{item.title}</h4>
+              <Link to={`/recipe/${item.id}`}>
+                <img src={item.image ? item.image : noImage} alt={item.title} />
+                <h4>{item.title}</h4>
+              </Link>
             </Card>
           );
         })}
