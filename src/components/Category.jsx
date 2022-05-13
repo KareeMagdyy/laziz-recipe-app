@@ -64,19 +64,18 @@ const List = styled.div`
 const SLink = styled(NavLink)`
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   text-decoration: none;
   background: linear-gradient(35deg, #494949, #313131);
-  width: 5.3rem;
-  height: 5.3rem;
+  width: 4.5rem;
+  height: 4.5rem;
   cursor: pointer;
   text-align: center;
 
   h4 {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     color: #fff;
   }
 
