@@ -8,6 +8,7 @@ function Header() {
       <Nav>
         <GiKnifeFork />
         <Logo to={"/"}>Lazeeez</Logo>
+        <Link to={"/liked"}>Liked</Link>
       </Nav>
     </Wrapper>
   );

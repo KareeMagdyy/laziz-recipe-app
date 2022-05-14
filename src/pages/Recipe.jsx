@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
-function Recipe() {
+function Recipe(props) {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [activeTab, setActiveTab] = useState("ingredients");
   const [analyzedInstructions, setAnalyzedInstructions] = useState([]);
@@ -61,18 +62,29 @@ function Recipe() {
           <img src={recipeDetails.image} alt={recipeDetails.title} />
         </div>
         <Info>
-          <Button
-            onClick={() => setActiveTab("ingredients")}
-            className={activeTab === "ingredients" ? "active" : ""}
-          >
-            Ingredients
-          </Button>
-          <Button
-            onClick={() => setActiveTab("instructions")}
-            className={activeTab === "instructions" ? "active" : ""}
-          >
-            Instructions
-          </Button>
+          <div className='btns'>
+            <Button
+              onClick={() => setActiveTab("ingredients")}
+              className={activeTab === "ingredients" ? "active" : ""}
+            >
+              Ingredients
+            </Button>
+            <Button
+              onClick={() => setActiveTab("instructions")}
+              className={activeTab === "instructions" ? "active" : ""}
+            >
+              Instructions
+            </Button>
+
+            {props.LikedArray.includes(recipeDetails.id) ? (
+              <FcLike onClick={() => props.removeLike(recipeDetails.id)} />
+            ) : (
+              <FcLikePlaceholder
+                onClick={() => props.addLike(recipeDetails.id)}
+              />
+            )}
+          </div>
+
           <div>
             {activeTab === "ingredients" && <ul>{ingredientsDetailed}</ul>}
             {activeTab === "instructions" && <ol>{instructionsDetailed}</ol>}
@@ -122,7 +134,7 @@ const Flex = styled.div`
 
   h2 {
     margin-bottom: 2rem;
-    max-width: 30ch;
+    max-width: 25ch;
   }
 
   ol,
@@ -159,6 +171,15 @@ const Flex = styled.div`
 
 const Info = styled.div`
   margin-left: 10rem;
+
+  .btns {
+    display: flex;
+  }
+
+  svg {
+    font-size: 2.5rem;
+  }
+
   @media (max-width: 1200px) {
     margin: 0;
   }
