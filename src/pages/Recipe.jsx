@@ -110,9 +110,11 @@ function Recipe(props) {
           </Info>
         </Flex>
       ) : recipeDetails.code === 401 ? (
-        <h3>Try Again Tomorrow</h3>
+        <h3 className='errMsg'>Limit Exceeded Try Again Tomorrow</h3>
       ) : (
-        <h3>Page not found</h3>
+        <h3 className='errMsg'>
+          <span>404 | </span>Page not found
+        </h3>
       )}
     </Wrapper>
   );
@@ -140,6 +142,19 @@ const Wrapper = styled(motion.div)`
   }
   @media (min-width: 1400px) {
     max-width: 1320px;
+  }
+
+  .errMsg {
+    text-align: center;
+    border: 2px solid #000;
+    width: fit-content;
+    padding: 3rem;
+    margin: 1rem auto;
+
+    span {
+      font-weight: 600;
+      font-size: 1.5em;
+    }
   }
 `;
 
