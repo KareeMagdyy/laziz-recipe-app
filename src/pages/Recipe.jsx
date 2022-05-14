@@ -211,6 +211,7 @@ const Flex = styled.div`
 
 const MyList = styled.div`
   padding-left: 2rem;
+  padding-right: 1rem;
   margin-top: 2rem;
   max-height: 25rem;
   overflow-y: scroll;

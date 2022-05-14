@@ -15,7 +15,7 @@ function Veggie() {
   }, []);
 
   const getVeggie = async () => {
-    const checkStorage = localStorage.getItem("vegetarian");
+    const checkStorage = sessionStorage.getItem("vegetarian");
     if (checkStorage) {
       setVeggie(JSON.parse(checkStorage));
     } else {
@@ -23,7 +23,7 @@ function Veggie() {
         `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=10&tags=vegetarian`
       );
       const data = await res.json();
-      localStorage.setItem("vegetarian", JSON.stringify(data.recipes));
+      sessionStorage.setItem("vegetarian", JSON.stringify(data.recipes));
       setVeggie(data.recipes);
       console.log(data.recipes);
     }
