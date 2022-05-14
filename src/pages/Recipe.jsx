@@ -50,8 +50,6 @@ function Recipe(props) {
     return <li key={uuidv4()}>{instruction.step}</li>;
   });
 
-  console.log(recipeDetails);
-
   return (
     <Wrapper
       animate={{ opacity: 1 }}
@@ -59,56 +57,63 @@ function Recipe(props) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Flex>
-        <div>
-          <h2>{recipeDetails.title}</h2>
-          <img src={recipeDetails.image} alt={recipeDetails.title} />
-          <Facts
-            isVegetarian={recipeDetails.vegetarian}
-            isVegan={recipeDetails.vegan}
-            isDairyFree={recipeDetails.dairyFree}
-            isGlutenFree={recipeDetails.glutenFree}
-            isFodMap={recipeDetails.lowFodmap}
-          />
-        </div>
-        <Info>
-          <div className='btns'>
-            <Button
-              onClick={() => setActiveTab("ingredients")}
-              className={activeTab === "ingredients" ? "active" : ""}
-            >
-              Ingredients
-            </Button>
-            <Button
-              onClick={() => setActiveTab("instructions")}
-              className={activeTab === "instructions" ? "active" : ""}
-            >
-              Instructions
-            </Button>
-
-            {props.LikedArray.includes(recipeDetails.id) ? (
-              <FcLike onClick={() => props.removeLike(recipeDetails.id)} />
-            ) : (
-              <FcLikePlaceholder
-                onClick={() => props.addLike(recipeDetails.id)}
-              />
-            )}
-          </div>
-
+      {recipeDetails.status !== "failure" &&
+      Object.keys(recipeDetails).length !== 0 ? (
+        <Flex>
           <div>
-            {activeTab === "ingredients" && (
-              <MyList>
-                <ul>{ingredientsDetailed}</ul>
-              </MyList>
-            )}
-            {activeTab === "instructions" && (
-              <MyList>
-                <ol>{instructionsDetailed}</ol>
-              </MyList>
-            )}
+            <h2>{recipeDetails.title}</h2>
+            <img src={recipeDetails.image} alt={recipeDetails.title} />
+            <Facts
+              isVegetarian={recipeDetails.vegetarian}
+              isVegan={recipeDetails.vegan}
+              isDairyFree={recipeDetails.dairyFree}
+              isGlutenFree={recipeDetails.glutenFree}
+              isFodMap={recipeDetails.lowFodmap}
+            />
           </div>
-        </Info>
-      </Flex>
+          <Info>
+            <div className='btns'>
+              <Button
+                onClick={() => setActiveTab("ingredients")}
+                className={activeTab === "ingredients" ? "active" : ""}
+              >
+                Ingredients
+              </Button>
+              <Button
+                onClick={() => setActiveTab("instructions")}
+                className={activeTab === "instructions" ? "active" : ""}
+              >
+                Instructions
+              </Button>
+
+              {props.LikedArray.includes(recipeDetails.id) ? (
+                <FcLike onClick={() => props.removeLike(recipeDetails.id)} />
+              ) : (
+                <FcLikePlaceholder
+                  onClick={() => props.addLike(recipeDetails.id)}
+                />
+              )}
+            </div>
+
+            <div>
+              {activeTab === "ingredients" && (
+                <MyList>
+                  <ul>{ingredientsDetailed}</ul>
+                </MyList>
+              )}
+              {activeTab === "instructions" && (
+                <MyList>
+                  <ol>{instructionsDetailed}</ol>
+                </MyList>
+              )}
+            </div>
+          </Info>
+        </Flex>
+      ) : recipeDetails.code === 401 ? (
+        <h3>Try Again Tomorrow</h3>
+      ) : (
+        <h3>Page not found</h3>
+      )}
     </Wrapper>
   );
 }
@@ -212,11 +217,20 @@ const Info = styled.div`
 
   .btns {
     display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-item: center;
   }
 
   svg {
     font-size: 2.5rem;
     cursor: pointer;
+    border: 2px solid #000;
+    padding: 0.2rem;
+    border-radius: 0.3rem;
+    width: 50px;
+    height: 50px;
   }
 
   @media (max-width: 1200px) {
@@ -229,9 +243,9 @@ const Button = styled.button`
   color: #313131;
   background-color: #fff;
   border: 2px solid #000;
-  margin-right: 2rem;
   font-weight: 600;
   cursor: pointer;
+  border-radius: 0.3rem;
 `;
 
 export default Recipe;
