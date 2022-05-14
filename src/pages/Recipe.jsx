@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import Facts from "../components/Facts";
 
 function Recipe(props) {
   const [recipeDetails, setRecipeDetails] = useState({});
@@ -49,6 +50,8 @@ function Recipe(props) {
     return <li key={uuidv4()}>{instruction.step}</li>;
   });
 
+  console.log(recipeDetails);
+
   return (
     <Wrapper
       animate={{ opacity: 1 }}
@@ -60,6 +63,13 @@ function Recipe(props) {
         <div>
           <h2>{recipeDetails.title}</h2>
           <img src={recipeDetails.image} alt={recipeDetails.title} />
+          <Facts
+            isVegetarian={recipeDetails.vegetarian}
+            isVegan={recipeDetails.vegan}
+            isDairyFree={recipeDetails.dairyFree}
+            isGlutenFree={recipeDetails.glutenFree}
+            isFodMap={recipeDetails.lowFodmap}
+          />
         </div>
         <Info>
           <div className='btns'>
@@ -86,8 +96,16 @@ function Recipe(props) {
           </div>
 
           <div>
-            {activeTab === "ingredients" && <ul>{ingredientsDetailed}</ul>}
-            {activeTab === "instructions" && <ol>{instructionsDetailed}</ol>}
+            {activeTab === "ingredients" && (
+              <MyList>
+                <ul>{ingredientsDetailed}</ul>
+              </MyList>
+            )}
+            {activeTab === "instructions" && (
+              <MyList>
+                <ol>{instructionsDetailed}</ol>
+              </MyList>
+            )}
           </div>
         </Info>
       </Flex>
@@ -122,6 +140,7 @@ const Wrapper = styled(motion.div)`
 
 const Flex = styled.div`
   display: flex;
+  justify-content: center;
 
   .active {
     background: linear-gradient(35deg, #494949, #313131);
@@ -129,6 +148,7 @@ const Flex = styled.div`
   }
 
   img {
+    width: 100%;
     max-width: 450px;
   }
 
@@ -143,7 +163,7 @@ const Flex = styled.div`
   }
 
   ol li {
-    font-weight: 600;
+    margin-bottom: 1.5rem;
   }
 
   li {
@@ -169,6 +189,24 @@ const Flex = styled.div`
   }
 `;
 
+const MyList = styled.div`
+  padding-left: 2rem;
+  margin-top: 2rem;
+  max-height: 25rem;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 5px;
+`;
+
 const Info = styled.div`
   margin-left: 10rem;
 
@@ -178,6 +216,7 @@ const Info = styled.div`
 
   svg {
     font-size: 2.5rem;
+    cursor: pointer;
   }
 
   @media (max-width: 1200px) {

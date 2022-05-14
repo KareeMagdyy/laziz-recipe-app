@@ -6,7 +6,9 @@
 }
 
 body {
+  padding-bottom: 2rem;
   font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
 }
 
 :is(h3, h4, a) {

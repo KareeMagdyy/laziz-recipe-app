@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/css";
 import { Link } from "react-router-dom";
-import noImage from "../no-image.jpg";
+import noImage from "../image/no-image.jpg";
 
 function Popular() {
   const API_KEY = process.env.REACT_APP_API_KEY;

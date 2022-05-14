@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/css";
+import noImage from "../image/no-image.jpg";
 import { Link } from "react-router-dom";
 
 function Veggie() {
@@ -59,7 +60,10 @@ function Veggie() {
               <Card>
                 <Link to={`recipe/${recipe.id}`}>
                   <p>{recipe.title}</p>
-                  <img src={recipe.image} alt={recipe.title} />
+                  <img
+                    src={recipe.image ? recipe.image : noImage}
+                    alt={recipe.title}
+                  />
                   <Gradient />
                 </Link>
               </Card>

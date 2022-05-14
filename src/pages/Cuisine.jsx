@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
-import noImage from "../no-image.jpg";
+import noImage from "../image/no-image.jpg";
 import { Link } from "react-router-dom";
 
 function Cuisine() {

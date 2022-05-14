@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import noImage from "../image/no-image.jpg";
 
 function Liked(props) {
   const [likedQuery, setLikedQuery] = useState([]);
   const likedIds = props.LikedArray;
   const API_KEY = process.env.REACT_APP_API_KEY;
-  console.log(likedQuery.length);
 
   const getLikedDetails = () =>
     likedIds.map((id) => {
@@ -23,13 +24,17 @@ function Liked(props) {
   useEffect(() => {
     getLikedDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [likedIds]);
+  }, []);
 
   return (
-    <Wrapper>
+    <Wrapper
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Grid>
-        <Card>
-          {/* {cuisine.map((item) => {
+        {likedQuery.map((item) => {
           return (
             <Card key={item.id}>
               <Link to={`/recipe/${item.id}`}>
@@ -38,8 +43,7 @@ function Liked(props) {
               </Link>
             </Card>
           );
-        })} */}
-        </Card>
+        })}
       </Grid>
     </Wrapper>
   );
@@ -78,6 +82,7 @@ const Grid = styled.div`
 `;
 
 const Card = styled.div`
+  max-width: 400px;
   h4 {
     text-align: center;
     padding: 1rem;
