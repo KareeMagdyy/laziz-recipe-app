@@ -67,7 +67,7 @@ function Recipe(props) {
     </li>
   ));
 
-  const badNutrition = (nutritionDetails.good || []).map((item) => (
+  const badNutrition = (nutritionDetails.bad || []).map((item) => (
     <li key={uuidv4()}>
       {item.title}: {item.amount}
     </li>
