@@ -10,10 +10,12 @@ function Recipe(props) {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [activeTab, setActiveTab] = useState("ingredients");
   const [analyzedInstructions, setAnalyzedInstructions] = useState([]);
+  const [nutritionDetails, setNutritionDetails] = useState([]);
 
   const API_KEY = process.env.REACT_APP_API_KEY;
   let params = useParams();
 
+  //request Full Recipe Details by recipe ID
   const getFullRecipe = async () => {
     try {
       const res = await fetch(
@@ -25,7 +27,7 @@ function Recipe(props) {
       console.error("Recipe API", err);
     }
   };
-
+  // Request Instruction Steps by recipe ID
   const getAnalyzedInstructions = async () => {
     const res = await fetch(
       `https://api.spoonacular.com/recipes/${params.id}/analyzedInstructions?apiKey=${API_KEY}`
@@ -33,10 +35,19 @@ function Recipe(props) {
     const data = await res.json();
     setAnalyzedInstructions(data[0].steps);
   };
+  //Request Nutrition by recipe ID
+  const getNutritionDetails = async () => {
+    const res = await fetch(
+      `https://api.spoonacular.com/recipes/${params.id}/nutritionWidget.json?apiKey=${API_KEY}`
+    );
+    const data = await res.json();
+    setNutritionDetails(data);
+  };
 
   useEffect(() => {
     getFullRecipe();
     getAnalyzedInstructions();
+    getNutritionDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
@@ -50,6 +61,18 @@ function Recipe(props) {
     return <li key={uuidv4()}>{instruction.step}</li>;
   });
 
+  const goodNutrition = (nutritionDetails.good || []).map((item) => (
+    <li key={uuidv4()}>
+      {item.title}: {item.amount}
+    </li>
+  ));
+
+  const badNutrition = (nutritionDetails.good || []).map((item) => (
+    <li key={uuidv4()}>
+      {item.title}: {item.amount}
+    </li>
+  ));
+
   return (
     <Wrapper
       animate={{ opacity: 1 }}
@@ -59,57 +82,80 @@ function Recipe(props) {
     >
       {recipeDetails.status !== "failure" &&
       Object.keys(recipeDetails).length !== 0 ? (
-        <Flex>
-          <div>
-            <h2>{recipeDetails.title}</h2>
-            <img src={recipeDetails.image} alt={recipeDetails.title} />
-            <Facts
-              isVegetarian={recipeDetails.vegetarian}
-              isVegan={recipeDetails.vegan}
-              isDairyFree={recipeDetails.dairyFree}
-              isGlutenFree={recipeDetails.glutenFree}
-              isFodMap={recipeDetails.lowFodmap}
-            />
-          </div>
-          <Info>
-            <div className='btns'>
-              <Button
-                onClick={() => setActiveTab("ingredients")}
-                className={activeTab === "ingredients" ? "active" : ""}
-              >
-                Ingredients
-              </Button>
-              <Button
-                onClick={() => setActiveTab("instructions")}
-                className={activeTab === "instructions" ? "active" : ""}
-              >
-                Instructions
-              </Button>
-
-              {props.LikedArray.includes(recipeDetails.id) ? (
-                <FcLike onClick={() => props.removeLike(recipeDetails.id)} />
-              ) : (
-                <FcLikePlaceholder
-                  onClick={() => props.addLike(recipeDetails.id)}
-                />
-              )}
-            </div>
-
+        <div>
+          <Flex>
             <div>
-              {activeTab === "ingredients" && (
-                <MyList>
-                  <ul>{ingredientsDetailed}</ul>
-                </MyList>
-              )}
-              {activeTab === "instructions" && (
-                <MyList>
-                  <ol>{instructionsDetailed}</ol>
-                </MyList>
-              )}
+              <h2>{recipeDetails.title}</h2>
+              <img src={recipeDetails.image} alt={recipeDetails.title} />
+              <Facts
+                isVegetarian={recipeDetails.vegetarian}
+                isVegan={recipeDetails.vegan}
+                isDairyFree={recipeDetails.dairyFree}
+                isGlutenFree={recipeDetails.glutenFree}
+                isFodMap={recipeDetails.lowFodmap}
+              />
             </div>
-          </Info>
-        </Flex>
-      ) : recipeDetails.code === 401 ? (
+            <Info>
+              <div className='btns'>
+                <Button
+                  onClick={() => setActiveTab("ingredients")}
+                  className={activeTab === "ingredients" ? "active" : ""}
+                >
+                  Ingredients
+                </Button>
+                <Button
+                  onClick={() => setActiveTab("instructions")}
+                  className={activeTab === "instructions" ? "active" : ""}
+                >
+                  Instructions
+                </Button>
+
+                {props.LikedArray.includes(recipeDetails.id) ? (
+                  <FcLike onClick={() => props.removeLike(recipeDetails.id)} />
+                ) : (
+                  <FcLikePlaceholder
+                    onClick={() => props.addLike(recipeDetails.id)}
+                  />
+                )}
+              </div>
+
+              <div>
+                {activeTab === "ingredients" && (
+                  <MyList>
+                    <ul>{ingredientsDetailed}</ul>
+                  </MyList>
+                )}
+                {activeTab === "instructions" && (
+                  <MyList>
+                    <ol>{instructionsDetailed}</ol>
+                  </MyList>
+                )}
+              </div>
+            </Info>
+          </Flex>
+          <Nutrition>
+            <h3>Nutrition</h3>
+            <Flex>
+              <ul>
+                <h4>Summary</h4>
+                <li>Calories: {nutritionDetails.calories}</li>
+                <li>Carbs: {nutritionDetails.carbs}</li>
+                <li>Fats: {nutritionDetails.fat}</li>
+                <li>Protein: {nutritionDetails.protein}</li>
+              </ul>
+              <ul>
+                <h4>Good Nutrition</h4>
+                {goodNutrition}
+              </ul>
+
+              <ul>
+                <h4>Bad Nutrition</h4>
+                {badNutrition}
+              </ul>
+            </Flex>
+          </Nutrition>
+        </div>
+      ) : recipeDetails.code === 401 || recipeDetails.code === 402 ? (
         <h3 className='errMsg'>Limit Exceeded Try Again Tomorrow</h3>
       ) : (
         <h3 className='errMsg'>
@@ -161,6 +207,8 @@ const Wrapper = styled(motion.div)`
 const Flex = styled.div`
   display: flex;
   justify-content: center;
+  padding-bottom: 3rem;
+  border-bottom: 2px solid #494949;
 
   .active {
     background: linear-gradient(35deg, #494949, #313131);
@@ -226,6 +274,7 @@ const MyList = styled.div`
     background-color: darkgrey;
     outline: 1px solid slategrey;
     border-radius: 5px;
+  }
 `;
 
 const Info = styled.div`
@@ -236,7 +285,7 @@ const Info = styled.div`
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
-    align-item: center;
+    align-items: center;
   }
 
   svg {
@@ -262,6 +311,42 @@ const Button = styled.button`
   font-weight: 600;
   cursor: pointer;
   border-radius: 0.3rem;
+`;
+
+const Nutrition = styled.div`
+  h3 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  div {
+    @media (min-width: 900px) {
+      align-items: flex-start;
+      justify-content: space-around;
+      flex-direction: row;
+    }
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    margin: 0 auto;
+    h4 {
+      margin: 0.5rem 0;
+      text-decoration: underline;
+      font-size: 1.3rem;
+    }
+
+    li {
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+  }
 `;
 
 export default Recipe;
