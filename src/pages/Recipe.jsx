@@ -336,6 +336,7 @@ const Nutrition = styled.div`
   ul {
     padding-left: 1.5rem;
     margin: 0 auto;
+
     h4 {
       margin: 0.5rem 0;
       text-decoration: underline;
