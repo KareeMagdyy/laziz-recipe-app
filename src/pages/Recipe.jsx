@@ -157,10 +157,12 @@ function Recipe(props) {
         </div>
       ) : recipeDetails.code === 401 || recipeDetails.code === 402 ? (
         <h3 className='errMsg'>Limit Exceeded Try Again Tomorrow</h3>
-      ) : (
+      ) : recipeDetails.code === 404 ? (
         <h3 className='errMsg'>
           <span>404 | </span>Page not found
         </h3>
+      ) : (
+        <h3 className='errMsg'>Cooking</h3>
       )}
     </Wrapper>
   );
